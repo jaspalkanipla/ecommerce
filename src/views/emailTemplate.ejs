@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+      .container { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+      .btn { display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Hello <%= name %> 👋</h1>
+      <p>We are glad to have you with us.</p>
+      <p>Your order ID is: <strong><%= orderId %></strong></p>
+      <a href="<%= actionUrl %>" class="btn">View Details</a>
+    </div>
+  </body>
+</html>
