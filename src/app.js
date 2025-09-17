@@ -17,6 +17,7 @@ import subcategoriesRoutes from "./routes/subcategory.routes.js";
 import productsRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import orderRoutes from "./routes/order.routes.js";
+import paymentRoutes from "./routes/payment.routes.js";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
 
 
@@ -31,11 +32,9 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.static("public"));
 
-
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
 //////////////////////// ecommerece routes //////////////////////
-
 app.use("/api/users", userRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/categories", categoriesRoutes);
@@ -43,6 +42,7 @@ app.use("/api/subcategories", subcategoriesRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/payments", paymentRoutes);
 
 ////////////////// changes in app file 
 //////////////////////// ecommerece routes end  //////////////////////
@@ -65,5 +65,5 @@ app.get("/", (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 export default app;
-
+  
 

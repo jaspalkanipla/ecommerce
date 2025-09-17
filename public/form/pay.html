@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Razorpay Payment Test</title>
+</head>
+<body>
+  <h1>Pay Now Test</h1>
+  <button id="payButton">Pay ₹100</button>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    document.getElementById('payButton').onclick = async function(e) {
+      e.preventDefault();
+
+      // Step 1: Backend से order create API call करो
+      const response = await fetch('/api/payments/razorpay/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          amount: 100,       
+          currency: 'INR'
+        })
+      });
+
+      const data = await response.json();
+      if (!data.success) {
+        alert('Error creating order: ' + data.message);
+        return;
+      }
+
+      const options = {
+        key: 'rzp_test_RFtVpJXE5eoLuf', 
+        amount: data.data.amount,    
+        currency: data.data.currency || 'INR',
+        name: 'Test Shop',
+        description: 'Test Transaction',
+        order_id: data.data.id,
+        handler: async function(responsePayment) {
+          console.log('Payment Response:', responsePayment);
+
+          // Step 2: payment verify API call करो backend को
+          const verify = await fetch('/api/payments/razorpay/verify', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              razorpay_order_id: responsePayment.razorpay_order_id,
+              razorpay_payment_id: responsePayment.razorpay_payment_id,
+              razorpay_signature: responsePayment.razorpay_signature
+            })
+          });
+
+          const verifyResult = await verify.json();
+          alert('Payment Verification: ' + verifyResult.message);
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+  </script>
+</body>
+</html>
